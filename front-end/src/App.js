@@ -1,27 +1,25 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
-import * as d3 from 'd3';
-import BarChart from './components/BarChart.js';
-import ScatterPlotMatrix from './components/ScatterPlotMatrix.js';
+import ScatterMatrix from './components/scatter_matrix.js'
+
+const varCalidadVida = ["comparacion_calidad_vida", "comparacion_situacion_economica", "comparacion_convivencia_familiar"];
+const varCalidadVivienda = ["estado_servicios", "satisfaccion_vivienda", "comparacion_tamaño_vivienda", "comparacion_comodidad_vivienda"];
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      scatterData: null
+    };
+    fetch("http://192.168.1.62:8080/static/data.json")
+      .then((r) => r.json())
+      .then(({ scatterData }) => {
+        this.setState({ scatterData })
+      })
+  }  
   render() {
-    d3.csv("http://192.168.0.13:8080/static/flowers.csv", function(error, data) {
-      if (error) throw error;
-      console.log(data);
-    }
-    )
-
     return (
-      <div className='App'>
-        <div className='App-header'>
-          <h2>d3ia dashboard</h2>
-        </div>
-        <div>
-          <BarChart data={[5,10,1,3]} size={[500,500]} />
-          <ScatterPlotMatrix/>
-        </div>
+      <div style={{width: 800, height: 600}}> 
+        <ScatterMatrix data={this.state.scatterData} columns={varCalidadVivienda} rows={varCalidadVida}/>
       </div>
     );
   }
