@@ -103,8 +103,6 @@ class BarChart extends Component {
     }
   }
 
-  shouldComponentUpdate() { return false }
-
   render() {
     return <svg ref={node => this.node = node}
                 width={500} height={500}>
