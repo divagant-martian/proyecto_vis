@@ -32,10 +32,12 @@ class ScatterPlotMatrix extends Component {
         size = this.props.size;
 
     var x = d3.scaleLinear()
-              .range([padding / 2, size - padding / 2]);
+              .range([padding / 2, size - padding / 2])
+              .domain([0, 1]);
 
     var y = d3.scaleLinear()
-              .range([size - padding / 2, padding / 2]);
+              .range([size - padding / 2, padding / 2])
+              .domain([0, 1]);
 
     var xAxis = d3.axisBottom()
                   .scale(x)
