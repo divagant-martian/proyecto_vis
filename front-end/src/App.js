@@ -5,7 +5,7 @@ import MySelector from "./components/my_selector";
 import { Container, Header, Grid } from 'semantic-ui-react';
 import ScatterPlotMatrix from './components/ScatterPlotMatrix.js';
 
-const urlBackend = "/data";
+const urlBackend = "https://raw.githubusercontent.com/zombiefungus/proyecto_vis/master/data/";
 
 const optCalidadVida = [
   ["Calidad de vida", 'comparacion_calidad_vida'],

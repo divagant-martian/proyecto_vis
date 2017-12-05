@@ -3,12 +3,9 @@
 cd ./front-end
 yarn build
 cd ..
-rm -r ./docs
 git rm -rf ./docs
+rm -r ./docs
 mv ./front-end/build ./docs
-cd ./docs
-ln -s ../data ./
-cd ..
 git add ./docs
 
 
