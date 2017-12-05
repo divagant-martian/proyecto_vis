@@ -105,7 +105,7 @@ class ScatterPlotMatrix extends Component {
         .attr("y",  -padding)//esto esta moviendo x
     /* .attr("dy", ".71em")*/
         .attr("transform", "rotate(-90)")
-        .text(function(d) { return d.y; });
+        .text(function(d) { return d.y.replace('_', '\n').replace("comparacion", ""); });
 
     cell.filter(function(d) { return (d.j === 0); }).append("text")
         .attr("x", padding/2)
@@ -113,7 +113,7 @@ class ScatterPlotMatrix extends Component {
         .attr("dy", "-2em")
         .attr("align", "center")
         .attr("width", size)
-        .text(function(d) { return d.x; });
+        .text(function(d) { return d.x.replace('_', '\n').replace("comparacion", ""); });
     cell.call(brush);
 
     function plot(p) {
