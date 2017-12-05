@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import BarChart from './components/BarChart.js';
 import ProjectBasicData from './components/ProjectBasicData.js';
 import MySelector from "./components/my_selector";
-import { Container, Header } from 'semantic-ui-react';
+import { Container, Header, Grid } from 'semantic-ui-react';
 import ScatterPlotMatrix from './components/ScatterPlotMatrix.js';
 
 const urlBackend = "http://192.168.1.62:8080/static";
@@ -40,6 +40,7 @@ class App extends Component {
       currentHistCEnto: null,
       raw: {},
       currentRaw: null,
+      dataGroup: []
     };
 
     fetch(`${urlBackend}/data_projects.json`)
@@ -51,15 +52,22 @@ class App extends Component {
           .then(r => r.json())
           .then((data) => {
             this.setState({ histograms: data,
-                            currentHistCVida: 'comparacion_calidad_vida',
-                            currentHistCVivi: 'satisfaccion_vivienda',
-                            currentHistCEnto: 'percepcion_ciudad'
+              currentHistCVida: 'comparacion_calidad_vida',
+              currentHistCVivi: 'satisfaccion_vivienda',
+              currentHistCEnto: 'percepcion_ciudad'
             });
           });
+
         fetch(`${urlBackend}/data_raw.json`)
           .then(r => r.json())
           .then((data) => {
             this.setState({ raw: data, currentRaw: data[currentProject]});
+          });
+
+        fetch(`${urlBackend}/data_group.json`)
+          .then(r => r.json())
+          .then(({ data }) => {
+            this.setState({ dataGroup: data });
           });
       });
   }
@@ -75,8 +83,8 @@ class App extends Component {
   }
 
   render() {
-    let {projects, currentProject, histograms, currentHistCVida, currentHistCVivi, currentHistCEnto, currentRaw, raw } = this.state;
-    if (currentProject && currentHistCVida && currentRaw) {
+    let {projects, currentProject, histograms, currentHistCVida, currentHistCVivi, currentHistCEnto, currentRaw, raw, dataGroup } = this.state;
+    if (currentProject && currentHistCVida && currentRaw && dataGroup.length) {
       let optProjects = Object.keys(projects).map(key => ({ key: key, value: key, text: projects[key].project }));
       return (
         <div className="App">
@@ -88,54 +96,75 @@ class App extends Component {
               handleChange={currentProject => this.setState({currentProject: currentProject, currentRaw: raw[currentProject] })}
               placeholder="Seleccione un proyecto"/>
             <ProjectBasicData data={projects[currentProject]}/>
-            <MySelector
-              options={optCalidadVida}
-              defaultValue={currentHistCVida}
-              handleChange={currentHistCVida => this.setState({ currentHistCVida })}
-              placeholder="Seleccione una variable"/>
-            <BarChart data={histograms[currentProject][currentHistCVida]} xn="bin" yn="count" width={450} height={400}/>
-            <MySelector
-              options={optCalidadVivienda}
-              defaultValue={currentHistCVivi}
-              handleChange={currentHistCVivi => this.setState({ currentHistCVivi })}
-              placeholder="Seleccione una variable"/>
-            <BarChart data={histograms[currentProject][currentHistCVivi]} xn="bin" yn="count" width={450} height={400}/>
-            <MySelector
-              options={optCalidadEntorno}
-              defaultValue={currentHistCEnto}
-              handleChange={currentHistCEnto => this.setState({ currentHistCEnto })}
-              placeholder="Seleccione una variable"/>
-            <BarChart data={histograms[currentProject][currentHistCEnto]} xn="bin" yn="count" width={450} height={400}/>
+            <Grid columns={3}>
+              <Grid.Row>
+                <Grid.Column>
+                  <Header as="h3">Percepción de calidad de vida</Header>
+                  <MySelector
+                    options={optCalidadVida}
+                    defaultValue={currentHistCVida}
+                    handleChange={currentHistCVida => this.setState({ currentHistCVida })}
+                    placeholder="Seleccione una variable"/>
+                </Grid.Column>
+                <Grid.Column>
+                  <Header as="h3">Percepción de calidad de vivienda</Header>
+                  <MySelector
+                    options={optCalidadVivienda}
+                    defaultValue={currentHistCVivi}
+                    handleChange={currentHistCVivi => this.setState({ currentHistCVivi })}
+                    placeholder="Seleccione una variable"/>
+                </Grid.Column>
+                <Grid.Column>
+                  <Header as="h3">Percepción de calidad de entorno</Header>
+                  <MySelector
+                    options={optCalidadEntorno}
+                    defaultValue={currentHistCEnto}
+                    handleChange={currentHistCEnto => this.setState({ currentHistCEnto })}
+                    placeholder="Seleccione una variable"/>
+                </Grid.Column>
+              </Grid.Row>
+              <Grid.Row>
+                <Grid.Column>
+                  <BarChart data={histograms[currentProject][currentHistCVida]} xn="bin" yn="count" width={350} height={300}/>
+                </Grid.Column>
+                <Grid.Column>
+                  <BarChart data={histograms[currentProject][currentHistCVivi]} xn="bin" yn="count" width={350} height={300}/>
+                </Grid.Column>
+                <Grid.Column>
+                  <BarChart data={histograms[currentProject][currentHistCEnto]} xn="bin" yn="count" width={350} height={300}/>
+                </Grid.Column>
+              </Grid.Row>
+            </Grid>
             <ScatterPlotMatrix
-              data={currentRaw}
+              data={dataGroup}
               yTraits={['estado_servicios',
-                        'satisfaccion_vivienda',
-                        'comparacion_tama\u00f1o_vivienda',
-                        'comparacion_comodidad_vivienda',
-                        'comparacion_ubicacion_vivienda',
-                        'percepcion_ciudad',
-                        'percepcion_barrio']}
-              xTraits={['comparacion_calidad_vida',
-                        'comparacion_situacion_economica',
-                        'comparacion_convivencia_familiar']}
-              size={200} padding={40}
-            />
-            <ScatterPlotMatrix
-              data={currentRaw}
-              yTraits={['estado_servicios',
-                        'satisfaccion_vivienda',
-                        'comparacion_tama\u00f1o_vivienda',
-                        'comparacion_comodidad_vivienda',
-                        'comparacion_ubicacion_vivienda',
-                        'percepcion_ciudad',
-                        'percepcion_barrio']}
-              xTraits={['comparacion_calidad_vida',
-                        'comparacion_situacion_economica',
-                        'comparacion_convivencia_familiar']}
-              size={200} padding={40}
-            />
-          </Container>
-        </div>
+                'satisfaccion_vivienda',
+                'comparacion_tama\u00f1o_vivienda',
+                'comparacion_comodidad_vivienda',
+                'comparacion_ubicacion_vivienda',
+                'percepcion_ciudad',
+                'percepcion_barrio']}
+                xTraits={['comparacion_calidad_vida',
+                  'comparacion_situacion_economica',
+                  'comparacion_convivencia_familiar']}
+                  size={200} padding={40}
+                />
+                <ScatterPlotMatrix
+                  data={dataGroup}
+                  yTraits={['estado_servicios',
+                    'satisfaccion_vivienda',
+                    'comparacion_tama\u00f1o_vivienda',
+                    'comparacion_comodidad_vivienda',
+                    'comparacion_ubicacion_vivienda',
+                    'percepcion_ciudad',
+                    'percepcion_barrio']}
+                    xTraits={['comparacion_calidad_vida',
+                      'comparacion_situacion_economica',
+                      'comparacion_convivencia_familiar']}
+                      size={200} padding={40}
+                    />
+                  </Container>
+                </div>
       );
     }
     return "...";
