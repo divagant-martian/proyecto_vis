@@ -12,7 +12,7 @@ const ProjectBasicData = ({data}) => {
       <p>Analicemos el proyecto *{data.project}*, ubicado en la ciudad de *{data.city}* dentro de la región *{data.region}*:</p>
       <p>Constructor: *{data.constructor}*</p>
       <p>Familias encuestadas: {data.total}</p>
-      <iframe width="425" height="350" frameborder="0" scrolling="no" marginHeight="0" marginWidth="0" src={src} ></iframe>
+      <iframe title="dasKartechen" width="425" height="350" frameBorder="0" scrolling="no" marginHeight="0" marginWidth="0" src={src} ></iframe>
     </div>
   );
 };

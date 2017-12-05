@@ -37,6 +37,7 @@ class BarChart extends Component {
     const node = this.node;
     const xn = this.props.xn;
     const yn = this.props.yn;
+    const data = this.props.data;
 
     var margin = {top: 20, right: 20, bottom: 30, left: 40},
         width = 960 - margin.left - margin.right,
@@ -60,7 +61,6 @@ class BarChart extends Component {
                       "translate(" + margin.left + "," + margin.top + ")");
 
     // get the data
-    this.props.data.then( data => {
       // format the data
       data.forEach(function(d) {
         d[yn] = +d[yn];
@@ -92,7 +92,6 @@ class BarChart extends Component {
       svg.append("g")
          .call(d3.axisLeft(y));
 
-    })
   }
 
   render() {
