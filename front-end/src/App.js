@@ -9,22 +9,22 @@ import BarChartMatrix from './components/BarChartMatrix.js';
 const urlBackend = "https://raw.githubusercontent.com/zombiefungus/proyecto_vis/master/data/";
 
 const optCalidadVida = [
-    ["Calidad de vida", 'comparacion_calidad_vida'],
-    ["Situación económica", 'comparacion_situacion_economica'],
-    ["Convivencia familiar", 'comparacion_convivencia_familiar']]
+    ["Life Quality", 'comparacion_calidad_vida'],
+    ["Economic Situation", 'comparacion_situacion_economica'],
+    ["Family Life", 'comparacion_convivencia_familiar']]
     .map((x) => ({key: x[1], value: x[1], text: x[0]}));
 
 const optCalidadVivienda = [
-    ["Estado de los servicios", 'estado_servicios'],
-    ["Satisfacción de la vivienda", 'satisfaccion_vivienda'],
-    ["Tamaño de vivienda", 'comparacion_tama\u00f1o_vivienda'],
-    ["Comodidad de vivienda", 'comparacion_comodidad_vivienda']]
+    ["Housing Satisfaction", 'satisfaccion_vivienda'],
+    ["House Size", 'comparacion_tama\u00f1o_vivienda'],
+    ["House Comfort", 'comparacion_comodidad_vivienda']]
     .map((x) => ({key: x[1], value: x[1], text: x[0]}));
 
 const optCalidadEntorno = [
-    ['Comparacion ubicacion vivienda', 'comparacion_ubicacion_vivienda'],
-    ['Percepcion ciudad', 'percepcion_ciudad'],
-    ['Percepcion barrio', 'percepcion_barrio']]
+    ["Public Services State", 'estado_servicios'],
+    ['House Location', 'comparacion_ubicacion_vivienda'],
+    ['City Perception', 'percepcion_ciudad'],
+    ['Neighborhood Perception', 'percepcion_barrio']]
     .map((x) => ({key: x[1], value: x[1], text: x[0]}));
 
 class App extends Component {
@@ -98,7 +98,7 @@ class App extends Component {
             return (
               <div className="App">
                 <Container fluid textAlign="center">
-                  <Header as="h1">Proyecto Vivienda Gratuita y de Interés Social</Header>
+                  <Header as="h1">Free Housing Project in Colombia</Header>
                   <p className="explain">
                     The free housing program is an initiative created by the colombian Ministry of Housing in 2012 to supply of zero-cost houses to people which had more necessities. </p>
                   <p className="explain">
@@ -119,7 +119,7 @@ class App extends Component {
                       <p className="explain">Participants of the survey where asked questions regarding how their life had changed after moving to the new houses <strong>(Life quality Variables)</strong>. They were also asked about how good they think their new home is <strong>(House quality)</strong>, as well as the environment in which the houses were built <strong>(Environment Quality)</strong></p>
                       <p className="explain">In this case, <strong>0 means the situation got worse</strong> while <strong>1 means improvement</strong></p>
                       <Grid.Column>
-                        <Header as="h3">Percepción de calidad de vida</Header>
+                        <Header as="h3">Life Quality Perception</Header>
                         <MySelector
                           options={optCalidadVida}
                           defaultValue={currentHistCVida}
@@ -127,7 +127,7 @@ class App extends Component {
                           placeholder="Seleccione una variable"/>
                       </Grid.Column>
                       <Grid.Column>
-                        <Header as="h3">Percepción de calidad de vivienda</Header>
+                        <Header as="h3">House Quality Perception</Header>
                         <MySelector
                           options={optCalidadVivienda}
                           defaultValue={currentHistCVivi}
@@ -135,7 +135,7 @@ class App extends Component {
                           placeholder="Seleccione una variable"/>
                       </Grid.Column>
                       <Grid.Column>
-                        <Header as="h3">Percepción de calidad de entorno</Header>
+                        <Header as="h3">Environment Quality Perception</Header>
                         <MySelector
                           options={optCalidadEntorno}
                           defaultValue={currentHistCEnto}

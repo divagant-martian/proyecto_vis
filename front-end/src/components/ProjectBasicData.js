@@ -15,10 +15,10 @@ const ProjectBasicData = ({data}) => {
 				<Card.Header>{data.project}</Card.Header>
 				<Card.Meta>
 					<span>Constructor: {data.constructor}</span><br/>
-					<span>Familias encuestadas: {data.total}</span>
+					<span>Families surveyed: {data.total}</span>
 				</Card.Meta>
 				<Card.Description>
-					Analicemos este proyecto ubicado en el municipio de {data.city} dentro de la región {data.region}.
+					Let's analyse this project located in the municipality of {data.city} inside the {data.region} region.
 				</Card.Description>        
 			</Card.Content>
 		</Card>
