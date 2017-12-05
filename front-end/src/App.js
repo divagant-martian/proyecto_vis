@@ -1,25 +1,39 @@
 import React, { Component } from 'react';
-import ScatterMatrix from './components/scatter_matrix.js'
+import BarChart from './components/BarChart.js';
+/* import ProblemDescription from './components/ProblemDescription.js';*/
+import ProjectBasicData from './components/ProjectBasicData.js';
 
-const varCalidadVida = ["comparacion_calidad_vida", "comparacion_situacion_economica", "comparacion_convivencia_familiar"];
-const varCalidadVivienda = ["estado_servicios", "satisfaccion_vivienda", "comparacion_tamaño_vivienda", "comparacion_comodidad_vivienda"];
+import { csv } from 'd3';
 
 class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      scatterData: null
-    };
-    fetch("http://192.168.1.62:8080/static/data.json")
-      .then((r) => r.json())
-      .then(({ scatterData }) => {
-        this.setState({ scatterData })
-      })
-  }  
+
+  constructor() {
+    super();
+    this.chartClicked = this.chartClicked.bind(this);
+    this.chartHovered = this.chartHovered.bind(this);
+  }
+
+  chartClicked(data) {
+    console.log('data clicked:');
+    console.log(data);
+  }
+
+  chartHovered(data) {
+    console.log('data hovered:');
+    console.log(data);
+  }
+
   render() {
+    var barChartData = fetch("http://192.168.1.62:8080/static/BarChartData.json").then(res => res.json())
     return (
-      <div style={{width: 800, height: 600}}> 
-        <ScatterMatrix data={this.state.scatterData} columns={varCalidadVivienda} rows={varCalidadVida}/>
+      <div className="App">
+        <header className="App-header">
+          <h1 className="App-title">Proyecto Vivienda Gratuita y de Interés Social</h1>
+        </header>
+        <div className="container">
+          <ProjectBasicData data={{project:'proyecto X', city:'Ciudad', region:'Region', lat: 5.0646046, lng: -75.4992304, total: 30, constructor:'Constructor'}}/>
+          <BarChart data={barChartData} xn="salesperson" yn="sales" onClickFn={this.chartClicked} />
+        </div>
       </div>
     );
   }
