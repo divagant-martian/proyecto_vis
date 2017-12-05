@@ -40,8 +40,8 @@ class BarChart extends Component {
     const data = this.props.data;
 
     var margin = {top: 20, right: 20, bottom: 30, left: 40},
-        width = 960 - margin.left - margin.right,
-        height = 500 - margin.top - margin.bottom;
+        width = this.props.width - margin.left - margin.right,
+        height = this.props.height - margin.top - margin.bottom;
 
     // set the ranges
     var x = d3.scaleBand()
@@ -104,9 +104,7 @@ class BarChart extends Component {
   }
 
   render() {
-    return <svg ref={node => this.node = node}
-                width={500} height={500}>
-    </svg>
+    return <svg ref={node => this.node = node}></svg>
   }
 
 }
