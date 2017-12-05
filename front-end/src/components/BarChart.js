@@ -53,6 +53,7 @@ class BarChart extends Component {
     // append the svg object to the body of the page
     // append a 'group' element to 'svg'
     // moves the 'group' element to the top left margin
+    d3.select(node).selectAll("*").remove();
     var svg = d3.select(node)
                 .attr("width", width + margin.left + margin.right)
                 .attr("height", height + margin.top + margin.bottom)
@@ -70,18 +71,18 @@ class BarChart extends Component {
       x.domain(data.map(function(d) { return d[xn]; }));
       y.domain([0, d3.max(data, function(d) { return d[yn]; })]);
 
-      // append the rectangles for the bar chart
-      svg.selectAll(".bar")
-         .data(data)
-         .enter().append("rect")
-         .attr("class", "bar")
-         .attr("x", d => { return x(d[xn]); })
-         .attr("width", x.bandwidth())
-         .attr("y", d => { return y(d[yn]); })
-         .attr("height", d => { return height - y(d[yn]); })
-         .classed("selected-barchart", d => this.state.selected === d)
-         .on("click", this.onClick)
-         .on("hover", this.onHover);
+    // append the rectangles for the bar chart
+    svg.selectAll(".bar")
+       .data(data)
+       .enter().append("rect")
+       .attr("class", "bar")
+       .attr("x", d => { return x(d[xn]); })
+       .attr("width", x.bandwidth())
+       .attr("y", d => { return y(d[yn]); })
+       .attr("height", d => { return height - y(d[yn]); })
+       .classed("selected-barchart", d => this.state.selected === d)
+       .on("click", this.onClick)
+       .on("hover", this.onHover);
 
       // add the x Axis
       svg.append("g")
@@ -92,7 +93,17 @@ class BarChart extends Component {
       svg.append("g")
          .call(d3.axisLeft(y));
 
+
   }
+
+  componentWillReceiveProps(nextProps) {
+    // we have to handle the DOM ourselves now
+    if (nextProps.data !== this.props.data) {
+      this.createChart()
+    }
+  }
+
+  shouldComponentUpdate() { return false }
 
   render() {
     return <svg ref={node => this.node = node}
