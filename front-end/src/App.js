@@ -5,12 +5,23 @@ import ProjectBasicData from './components/ProjectBasicData.js';
 
 import { csv } from 'd3';
 
+const urlBackend = "http://192.168.1.62:8080/static";
+
 class App extends Component {
 
   constructor() {
     super();
     this.chartClicked = this.chartClicked.bind(this);
     this.chartHovered = this.chartHovered.bind(this);
+
+    this.state = {
+      projects: [],
+      currentProject: null
+    };
+
+    fetch(`${urlBackend}/data_projects.json`)
+      .then(r => r.json())
+      .then(({ data }) => this.setState({ projects: data, currentProject: data[0] }));
   }
 
   chartClicked(data) {
@@ -24,19 +35,21 @@ class App extends Component {
   }
 
   render() {
-    var barChartData = fetch("http://192.168.1.62:8080/static/BarChartData.json").then(res => res.json())
-    return (
-      <div className="App">
-        <header className="App-header">
-          <h1 className="App-title">Proyecto Vivienda Gratuita y de Interés Social</h1>
-        </header>
-        <div className="container">
-          <ProjectBasicData data={{project:'proyecto X', city:'Ciudad', region:'Region', lat: 5.0646046, lng: -75.4992304, total: 30, constructor:'Constructor'}}/>
-          <BarChart data={barChartData} xn="salesperson" yn="sales" onClickFn={this.chartClicked} />
+    if (this.state.projects.length > 0) {
+      return (
+        <div className="App">
+          <header className="App-header">
+            <h1 className="App-title">Proyecto Vivienda Gratuita y de Interés Social</h1>
+          </header>
+          <div className="container">
+            <ProjectBasicData data={this.state.currentProject}/>
+          </div>
         </div>
-      </div>
-    );
+      );
+    }
+    return "...";
   }
 }
+//   <BarChart data={barChartData} xn="salesperson" yn="sales" onClickFn={this.chartClicked} />
 
 export default App;
