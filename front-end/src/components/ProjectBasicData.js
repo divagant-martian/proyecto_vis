@@ -6,7 +6,7 @@ const ProjectBasicData = ({data}) => {
 		down = data.lat - 0.05,
 		left = data.lon - 0.05,
 		right = data.lon + 0.05,
-		src = `http://www.openstreetmap.org/export/embed.html?bbox=${left}%2C${down}%2C${right}%2C${up}&amp;layer=mapnik&marker=${data.lat}%2C${data.lon}`;
+		src = `https://www.openstreetmap.org/export/embed.html?bbox=${left}%2C${down}%2C${right}%2C${up}&amp;layer=mapnik&marker=${data.lat}%2C${data.lon}`;
 
 	return (
 		<Card centered style={{width: 500}}>
