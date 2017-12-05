@@ -5,7 +5,7 @@ import MySelector from "./components/my_selector";
 import { Container, Header, Grid } from 'semantic-ui-react';
 import ScatterPlotMatrix from './components/ScatterPlotMatrix.js';
 
-const urlBackend = "http://192.168.1.62:8080/static";
+const urlBackend = "/data";
 
 const optCalidadVida = [
   ["Calidad de vida", 'comparacion_calidad_vida'],
